@@ -1,0 +1,31 @@
+[package]
+authors = ["Edward Shin <contact@edwardsh.in>"]
+edition = "2018"
+readme = "README.md"
+name = "msp430-i2c-oled-example"
+version = "0.1.0"
+
+[dependencies]
+msp430 = "0.2.2"
+msp430-rt = "0.2.4"
+panic-msp430 = "0.2.0"
+
+# Use an existing PAC to ensure examples and the crate itself compiles. If
+# targeting a different device, you will need to replace all instances of
+# the identifier "msp430g2553" with the crate name of your PAC. Your PAC must
+# be generated with svd2rust git commit 783fbd0 or later.
+[dependencies.msp430g2553]
+version = "0.2.0"
+features = ["rt"]
+
+# Required for `cargo fix` to work!
+[[bin]]
+name = "msp430-i2c-oled-example"
+test = false
+bench = false
+
+[profile.release]
+opt-level = "s" # Size is more important than performance on MSP430.
+codegen-units = 1 # Better size optimization.
+lto = "fat" # _Much_ better size optimization.
+# debug = true # Debug _can_ slightly increase size of .text segment.
